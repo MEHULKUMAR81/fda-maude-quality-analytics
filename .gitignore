@@ -1,0 +1,6 @@
+# Ignore local database and temporary files
+medical.db
+medical.db.wal
+*.csv
+__pycache__/
+.ipynb_checkpoints/
