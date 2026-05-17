@@ -1,0 +1,15 @@
+## Dataset Source
+
+Raw FDA files were too large to upload to GitHub, so only the notebook and outputs are included in this repository.
+
+Data source: [FDA MAUDE Database Search Portal](https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfMAUDE/search.CFM)
+
+Files analyzed:
+- MDR Event Files  
+- Device Files  
+- Patient Files  
+- Narrative Text Files  
+
+Time period analyzed: **2020–2025**
+
+The MAUDE database contains adverse event reports submitted by manufacturers, importers, hospitals, healthcare professionals, and consumers for device-related injuries, malfunctions, and deaths. FDA notes that MAUDE should be used for signal detection and trend analysis—not direct failure rate comparisons. :contentReference[oaicite:0]{index=0}
