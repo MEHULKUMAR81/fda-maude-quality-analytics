@@ -181,7 +181,7 @@ Most frequent issues:
 
 This helps uncover hidden failure modes from unstructured complaint text.
 
-![NLP Analysis](Images/nlp_result.png)
+![NLP Analysis](Images/nlp result.png)
 
 ---
 
