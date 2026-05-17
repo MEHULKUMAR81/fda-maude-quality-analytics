@@ -1,11 +1,9 @@
-Use this as your `README.md` — concise enough for recruiters, but still shows technical depth + quality/regulatory relevance.
 
----
+
 
 # FDA MAUDE Quality Analytics: Complaint Trend & Risk Analysis
 
 Built an end-to-end analytics pipeline on FDA MAUDE (Manufacturer and User Facility Device Experience) data to identify recurring product failures, complaint concentration risks, traceability gaps, and potential CAPA opportunities across medical devices.
-
 This project simulates how a Quality Engineer / Continuous Improvement / Operations Analyst would investigate post-market complaint data to support ISO 13485 quality systems, CAPA prioritization, and risk mitigation.
 
 ---
