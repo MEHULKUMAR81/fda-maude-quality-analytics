@@ -1,154 +1,134 @@
-
-
-
 # FDA MAUDE Quality Analytics: Complaint Trend & Risk Analysis
 
-Built an end-to-end analytics pipeline on FDA MAUDE (Manufacturer and User Facility Device Experience) data to identify recurring product failures, complaint concentration risks, traceability gaps, and potential CAPA opportunities across medical devices.
-This project simulates how a Quality Engineer  would investigate post-market complaint data to support ISO 13485 quality systems, CAPA prioritization, and risk mitigation.
+Built an end-to-end analytics workflow on FDA MAUDE (Manufacturer and User Facility Device Experience) data to analyze post-market medical device complaints and identify recurring failure patterns, complaint concentration risks, traceability gaps, and potential CAPA opportunities.
+
+This project mirrors how a Quality Engineer or Continuous Improvement professional would investigate complaint data in an ISO 13485/FDA-regulated environment.
 
 ![Pareto Analysis](Images/Pareto.png)
+
 ---
 
 ## Business Problem
 
-Medical device manufacturers receive massive volumes of post-market complaints, but raw FDA MAUDE datasets are fragmented across multiple files:
+Medical device complaint data is highly fragmented across multiple FDA MAUDE files:
 
-* MDR Event Reports
-* Device Information
-* Patient Information
-* Narrative Text Files
+- MDR Event reports  
+- Device records  
+- Patient records  
+- Narrative complaint text  
 
-The challenge was:
+The challenge:
 
-* Large dataset size (millions of rows)
-* Multiple disconnected tables
-* Missing traceability between complaint reports and device records
-* Unstructured complaint narratives
-* Difficulty identifying recurring failure trends quickly
+- Millions of records across separate datasets  
+- Missing links between complaint and device records  
+- Unstructured complaint narratives  
+- Difficult to quickly identify recurring failures  
 
-The goal was to convert raw complaint data into actionable quality insights.
+I wanted to convert raw complaint data into actionable quality insights.
 
 ---
 
-## Dataset
+## Dataset Overview
 
-FDA MAUDE public dataset (2020–2025)
-
-Tables used:
-
-### 1. MDR Reports Table
-
-Core complaint event data
-
-Fields:
-
-* MDR_REPORT_KEY
-* DATE_RECEIVED
-* EVENT_TYPE
-* REPORT_SOURCE
-* REPORTER_COUNTRY_CODE
+### MDR Event Table  
+Core complaint event dataset
 
 **Records analyzed:** **13.8M+**
 
----
+Key fields:
+- MDR_REPORT_KEY  
+- DATE_RECEIVED  
+- EVENT_TYPE  
+- REPORT_SOURCE  
+- REPORTER_COUNTRY_CODE  
 
-### 2. Device Table
-
-Device-level information
-
-Fields:
-
-* Manufacturer
-* Brand
-* Product Code
-* Device Type
+### Device Table  
+Contains manufacturer + product level data
 
 **Records analyzed:** **2.19M+**
 
----
+Key fields:
+- Manufacturer  
+- Brand  
+- Product Code  
 
-### 3. Patient Table
+### Patient Table  
+Used for severity analysis
 
-Patient impact/severity details
+Key fields:
+- Injury  
+- Death  
+- Malfunction severity score  
 
-Fields:
-
-* Injury
-* Death
-* Malfunction severity
-
----
-
-### 4. Complaint Narrative Text
-
-Unstructured complaint descriptions used for NLP analysis.
+### Narrative Table  
+Used for failure text mining
 
 ---
 
-## Tech Stack
+## Tools Used
 
-Instead of loading millions of rows into memory with pandas:
+Handling millions of rows in pandas alone was slow, so I used:
 
-* **DuckDB** → fast SQL joins/querying on large flat files
-* **Python**
-* **Pandas**
-* **Matplotlib**
-* **NLP (CountVectorizer - Scikit Learn)**
-
----
-
-## Key Analysis Performed
-
-### Complaint Trend Analysis
-
-Tracked monthly complaint volume across 2025.
-
-**Finding:**
-Monthly complaints ranged from **347K → 441K**, showing persistent complaint inflows with recurring spikes.
+- **DuckDB** → fast SQL joins on large flat files  
+- **Python** → data cleaning + analysis  
+- **Pandas** → transformations  
+- **Matplotlib** → visualization  
+- **Scikit-learn (CountVectorizer)** → NLP keyword extraction  
 
 ---
 
-## Manufacturer Risk Concentration
+## Key Insights
 
-Top manufacturers by complaint volume:
+### Complaint Volume Trend
+Monthly complaint volume remained consistently high in 2025:
 
-* Dexcom → **834K**
-* Medtronic Puerto Rico → **410K**
-* Tandem Diabetes Care → **298K**
+**347K → 441K complaints/month**
 
-This highlighted complaint concentration among major diabetes device manufacturers.
-
----
-
-## Pareto Analysis (Critical Few)
-
-Built Pareto charts to identify the "vital few" device brands driving majority of complaints.
-
-### Largest contributor:
-
-**Dexcom G7 → 605K complaints**
-
-Top few device brands accounted for majority of complaint volume.
-
-This mirrors real-world CAPA prioritization logic.
+This indicates recurring complaint inflow rather than isolated spikes.
 
 ---
 
-## Severity Analysis
+### Manufacturer Concentration Risk
 
-Analyzed patient severity scores.
+Top manufacturers:
+
+- Dexcom → **834K**
+- Medtronic Puerto Rico → **410K**
+- Tandem Diabetes Care → **298K**
+
+Complaint concentration was heavily skewed toward diabetes device manufacturers.
+
+---
+
+### Pareto Risk Analysis
+
+A small number of products drove most complaints:
+
+- **Dexcom G7 → 605K complaints**
+- Top products crossed the **80% cumulative threshold**
+
+This helps prioritize CAPA efforts on the highest-risk product lines.
+
+---
+
+### Severity Analysis
+
+Used patient severity scores from FDA reports:
+
+- **0** → No serious patient harm  
+- **1–2** → Moderate impact  
+- **3** → Significant injury risk  
+- **4–5** → Critical severity/death-related events  
 
 Findings:
 
-* Severity 0 → **2.67M**
-* Severity 3 → **620K**
-* Severity 4–5 → significantly lower but higher risk
-
-Helps prioritize high-severity investigations.
+- Severity 0 → **2.67M**
+- Severity 3 → **620K**
+- Severity 4–5 → lower frequency but highest risk
 
 ---
 
-## Geographic Complaint Analysis
+### Geographic Complaint Trends
 
 Top reporting country:
 
@@ -156,96 +136,54 @@ Top reporting country:
 
 Followed by:
 
-* Switzerland
-* Japan
-* Germany
-* Canada
+- Switzerland  
+- Japan  
+- Germany  
+- Canada  
 
 ---
 
 ## NLP Failure Pattern Mining
 
-Applied NLP on complaint narratives to identify recurring failure keywords.
+Complaint narratives were unstructured text, so I used **CountVectorizer** to tokenize complaint descriptions, remove irrelevant words, and identify recurring failure terms.
 
-Most frequent issues:
+Most common issues found:
 
-* Injury
-* Failure
-* Malfunction
-* Battery
-* Infection
-* Broken
-* Leak
-* Fracture
-* Overheat
-
-This helps uncover hidden failure modes from unstructured complaint text.
+- Injury  
+- Failure  
+- Malfunction  
+- Battery  
+- Infection  
+- Leak  
+- Fracture  
+- Overheat  
 
 ![NLP Analysis](Images/nlp%20result.png)
 
 ---
 
-## Traceability Gap Analysis
+## Traceability Gap
 
-Joined MDR reports with device records.
+When joining complaint records with device data:
 
-Found:
+- **2.72M** complaint reports in 2025  
+- **541K** had no matching device record  
+- **19.8% traceability gap**
 
-* **2.72M** complaint reports in 2025
-* **541K** missing linked device records
-* **~19.8% traceability gap**
-
-This can create investigation delays during audits and CAPA reviews.
+This means nearly 1 in 5 complaints lacked linked device information, which could slow investigations, CAPA actions, and audit readiness.
 
 ---
 
-# Why This Matters
+## Why This Project Matters
 
-This project reflects real responsibilities in:
+This project helped me combine:
 
-* Quality Engineering
-* CAPA
-* Continuous Improvement
-* Operations Analytics
-* Medical Device Quality
-* ISO 13485 environments
-* FDA post-market surveillance
+- Quality engineering  
+- Root cause analysis  
+- Risk prioritization  
+- Complaint analytics  
+- Regulatory awareness  
 
----
 
-## What I Demonstrated
 
-* Large-scale data cleaning
-* SQL joins
-* Root cause trend analysis
-* Pareto prioritization
-* Complaint risk analysis
-* NLP on quality narratives
-* Traceability gap identification
-* Data storytelling for operational decisions
-
----
-
-## Potential Business Actions
-
-* Prioritize CAPA for high complaint products
-* Improve supplier/process controls
-* Reduce recurring failures
-* Improve complaint traceability
-* Strengthen post-market surveillance workflows
-
----
-
-## Repository Contents
-
-* Jupyter Notebook
-* SQL queries
-* Visualizations
-* Analysis outputs
-
----
-
----
-
-This project helped me bridge **quality engineering + manufacturing + analytics** by applying data-driven problem solving to medical device quality systems.
 
