@@ -6,7 +6,7 @@
 Built an end-to-end analytics pipeline on FDA MAUDE (Manufacturer and User Facility Device Experience) data to identify recurring product failures, complaint concentration risks, traceability gaps, and potential CAPA opportunities across medical devices.
 This project simulates how a Quality Engineer  would investigate post-market complaint data to support ISO 13485 quality systems, CAPA prioritization, and risk mitigation.
 
-![Pareto Analysis](images/pareto.png)
+![Pareto Analysis](Images/Pareto.png)
 ---
 
 ## Business Problem
@@ -181,7 +181,7 @@ Most frequent issues:
 
 This helps uncover hidden failure modes from unstructured complaint text.
 
-![NLP Analysis](images/nlp_result.png)
+![NLP Analysis](Images/nlp_result.png)
 
 ---
 
